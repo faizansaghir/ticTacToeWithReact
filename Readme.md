@@ -48,3 +48,23 @@ If we have any input field and we set its `value` prop to some value that is not
     const [playerName, setPlayerName] = useState('Initial Value')
     <input type='text' required value={playerName} onChange={handleChange}/>
     ```
+4. **Updating Objects and Arrays**  
+When we are updating a state which is an object or an array, we use previous state but we do not directly modity the previous state, rather, we clone the previous state and make changes to cloned state and return the updated cloned state.  
+If you directly modify the original state object or array (e.g., this.state.myArray.push(...)), React might not detect these changes correctly. This can lead to unexpected rendering behavior, missed updates, and performance problems.  
+```jsx
+const initialGameBoard = [
+    [null, null, null],
+    [null, null, null],
+    [null, null, null]
+]
+
+function handleSelectSquare(rowIndex, colIndex) {   
+    const [gameBoard, setGameBoard] = useState(initialGameBoard)
+
+    setGameBoard(prevGameBoard => {
+        const updatedGameBoard = [...prevGameBoard.map(innerArray => [...innerArray])]
+        updatedGameBoard[rowIndex][colIndex] = 'X';
+        return updatedGameBoard;
+    });
+}
+```
