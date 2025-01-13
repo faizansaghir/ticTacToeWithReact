@@ -68,3 +68,63 @@ function handleSelectSquare(rowIndex, colIndex) {
     });
 }
 ```
+5. **Lifting State**  
+When a state is used by different components, instead of maintaining the state inside component, we raise the state to lowest common ancestor and pass the state as prop tot he components.  
+
+***in App.jsx***
+```jsx
+function App() {
+  const [activePlayer, setActivePlayer] = useState('X')
+
+  function handleSelectSquare() {
+    setActivePlayer(currentlyActivePlayer => currentlyActivePlayer === 'X'?'O':'X')
+  }
+
+  return (
+    <main>
+      <div id="game-container">
+        <ol id="players" className='highlight-player'>
+          <Player name="Player 1" symbol="X" isActive={activePlayer==='X'}/>
+          <Player name="Player 2" symbol="O" isActive={activePlayer==='O'}/>
+        </ol>
+        <GameBoard onSelectSquare={handleSelectSquare} activePlayerSymbol={activePlayer}/>
+      </div>
+    </main>
+  )
+}
+```
+
+***in GameBoard.jsx***
+```jsx
+export default function GameBoard({onSelectSquare, activePlayerSymbol}){
+    const [gameBoard, setGameBoard] = useState(initialGameBoard)
+
+    function handleSelectSquare(rowIndex, colIndex) {
+        setGameBoard(prevGameBoard => {
+            const updatedGameBoard = [...prevGameBoard.map(innerArray => [...innerArray])]
+            updatedGameBoard[rowIndex][colIndex] = activePlayerSymbol;
+            return updatedGameBoard;
+        });
+
+        onSelectSquare();
+    }
+
+    // ...
+}
+```
+
+***in Player.jsx***
+```jsx
+export default function Player({name, symbol, isActive}) {
+    // ...
+    return (
+        <li className={isActive?'active':undefined}>
+            <span className="player">
+                {playerNameContainer}
+                <span className="player-symbol">{symbol}</span>
+            </span>
+            <button onClick={handleEditClick}>{isEditing?'Save':'Edit'}</button>
+        </li>
+    )
+}
+```
