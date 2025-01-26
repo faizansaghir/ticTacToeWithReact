@@ -128,7 +128,8 @@ export default function Player({name, symbol, isActive}) {
     )
 }
 ```
-6. **Avoid Intersecting State**
-We see that `gameTurns` state will contain details such as `player`, `row`, `col` for each turn in sequence.  
-We also see that `gameBoard` is a state that needs information `player`, `row`, `col` without sequence detail.  
-This shows that `gameBoard` can be derived from `gameTurns` state, thus we should derive the state rather than maintaining the state.   
+6. **Avoid Intersecting State**  
+- We see that `gameTurns` state will contain details such as `player`, `row`, `col` for each turn in sequence.  
+    We also see that `gameBoard` is a state that needs information `player`, `row`, `col` without sequence detail.  
+    This shows that `gameBoard` can be derived from `gameTurns` state, thus we should derive the state rather than maintaining the state.   
+- Similarly, we see that `activePlayer` state can be derived from `gameTurns` state, and since this state also updates everytime we click a cell, we can remove the `activePlayer` state and derive the state.
