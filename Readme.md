@@ -133,3 +133,7 @@ export default function Player({name, symbol, isActive}) {
     We also see that `gameBoard` is a state that needs information `player`, `row`, `col` without sequence detail.  
     This shows that `gameBoard` can be derived from `gameTurns` state, thus we should derive the state rather than maintaining the state.   
 - Similarly, we see that `activePlayer` state can be derived from `gameTurns` state, and since this state also updates everytime we click a cell, we can remove the `activePlayer` state and derive the state.
+7. **When NOT to Lift State**  
+- When we have multiple instance which have their own state e.g. `Player` has player name. Lifting state in this case is not possible.  
+- When we do not want to refresh the parent when the state changes e.g. changing player name should not refresh parent component, it should only refresh `Player` component. 
+- If we want to track such state in parent component, we should define a new state in parent component, and this should be updated when certain condition is met, by passing state updating function to child. e.g. `handlePlayerNameChange` passed as prop to `Player` component to update state when player name changes.
